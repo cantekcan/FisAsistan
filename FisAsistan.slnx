@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FisAsistan.Api/FisAsistan.Api.csproj" />
+    <Project Path="src/FisAsistan.Application/FisAsistan.Application.csproj" />
+    <Project Path="src/FisAsistan.Domain/FisAsistan.Domain.csproj" />
+    <Project Path="src/FisAsistan.Infrastructure/FisAsistan.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FisAsistan.Tests/FisAsistan.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,35 @@
+# .NET
+bin/
+obj/
+*.user
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+
+# Tesseract dil verisi — büyük dosyalar, setup script ile indirilir
+src/FisAsistan.Api/tessdata/*.traineddata
+
+# Yerel dosya depolama ve veritabanı verisi
+storage/
+src/FisAsistan.Api/storage/
+
+# Ortam / sırlar
+.env
+appsettings.Production.json
+
+# IDE
+.vs/
+.vscode/
+*.suo
+
+# Test/geçici dosyalar
+*.log
+api_run.log
+frontend_run.log
+.token
+upload_response.json
+export.csv
+export.xlsx
+downloaded.png

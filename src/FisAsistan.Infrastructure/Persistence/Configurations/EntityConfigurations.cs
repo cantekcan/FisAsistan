@@ -46,8 +46,33 @@ public class ReceiptConfiguration : IEntityTypeConfiguration<Receipt>
             .HasForeignKey(i => i.ReceiptId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasOne(r => r.Batch)
+            .WithMany(b => b.Receipts)
+            .HasForeignKey(r => r.BatchId)
+            .OnDelete(DeleteBehavior.SetNull);
+
         builder.HasIndex(r => r.UserId);
         builder.HasIndex(r => r.Status);
+        builder.HasIndex(r => r.BatchId);
+    }
+}
+
+public class ReceiptBatchConfiguration : IEntityTypeConfiguration<ReceiptBatch>
+{
+    public void Configure(EntityTypeBuilder<ReceiptBatch> builder)
+    {
+        builder.HasKey(b => b.Id);
+        builder.Property(b => b.OriginalFileName).IsRequired().HasMaxLength(500);
+        builder.Property(b => b.OriginalStoragePath).IsRequired().HasMaxLength(1000);
+        builder.Property(b => b.ContentType).HasMaxLength(200);
+
+        builder.HasOne(b => b.User)
+            .WithMany()
+            .HasForeignKey(b => b.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(b => b.UserId);
+        builder.HasIndex(b => b.Status);
     }
 }
 

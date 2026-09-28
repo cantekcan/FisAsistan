@@ -5,6 +5,8 @@ using FisAsistan.Infrastructure.Export;
 using FisAsistan.Infrastructure.Ocr;
 using FisAsistan.Infrastructure.Persistence;
 using FisAsistan.Infrastructure.Receipts;
+using FisAsistan.Infrastructure.ReceiptBatches;
+using FisAsistan.Infrastructure.Segmentation;
 using FisAsistan.Infrastructure.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +37,9 @@ public static class DependencyInjection
 
         services.AddSingleton<ReceiptParserService>();
         services.AddScoped<IReceiptProcessingService, ReceiptProcessingService>();
+
+        services.AddScoped<IReceiptSegmentationService, OpenCvReceiptSegmentationService>();
+        services.AddScoped<IReceiptBatchProcessingService, ReceiptBatchProcessingService>();
 
         return services;
     }

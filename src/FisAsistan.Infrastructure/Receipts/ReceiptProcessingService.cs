@@ -40,7 +40,7 @@ public class ReceiptProcessingService : IReceiptProcessingService
 
     public async Task<Guid> UploadAndProcessAsync(
         Guid userId, Stream fileStream, string originalFileName, string contentType, long fileSizeBytes,
-        CancellationToken ct = default)
+        Guid? batchId = null, string? sourceRegionJson = null, CancellationToken ct = default)
     {
         using var buffered = new MemoryStream();
         await fileStream.CopyToAsync(buffered, ct);
@@ -57,7 +57,9 @@ public class ReceiptProcessingService : IReceiptProcessingService
             ContentType = contentType,
             FileSizeBytes = fileSizeBytes,
             Status = ReceiptStatus.Processing,
-            UploadedAtUtc = DateTime.UtcNow
+            UploadedAtUtc = DateTime.UtcNow,
+            BatchId = batchId,
+            SourceRegionJson = sourceRegionJson
         };
 
         _db.Receipts.Add(receipt);

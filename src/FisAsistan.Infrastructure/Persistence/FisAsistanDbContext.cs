@@ -15,6 +15,7 @@ public class FisAsistanDbContext : DbContext
     public DbSet<ReceiptVatLine> ReceiptVatLines => Set<ReceiptVatLine>();
     public DbSet<ReceiptValidationIssue> ReceiptValidationIssues => Set<ReceiptValidationIssue>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<ReceiptBatch> ReceiptBatches => Set<ReceiptBatch>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

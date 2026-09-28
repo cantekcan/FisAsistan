@@ -48,3 +48,27 @@ public enum ValueSource
     Parser = 0,
     User = 1
 }
+
+/// <summary>
+/// Çoklu fiş fotoğrafı (bir fotoğrafta birden fazla fiş) yükleme akışının durumu.
+/// </summary>
+public enum ReceiptBatchStatus
+{
+    /// <summary>Fotoğraf yüklendi, segmentasyon henüz çalışmadı/tamamlanmadı.</summary>
+    Uploaded = 0,
+
+    /// <summary>Segmentasyon tamamlandı, önerilen bölgeler kullanıcı onayını bekliyor.</summary>
+    RegionsProposed = 1,
+
+    /// <summary>Segmentasyon hiçbir güvenilir bölge bulamadı; kullanıcı manuel bölge çizmeli veya tekrar denemeli.</summary>
+    SegmentationFailed = 2,
+
+    /// <summary>Kullanıcı onayladı, bölgeler OCR/parser pipeline'ından geçiyor.</summary>
+    Processing = 3,
+
+    /// <summary>Tüm bölgeler işlendi (her biri kendi Receipt kaydına dönüştü).</summary>
+    Completed = 4,
+
+    /// <summary>İşleme sırasında beklenmeyen bir hata oluştu.</summary>
+    Failed = 5
+}

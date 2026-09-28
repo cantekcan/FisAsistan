@@ -34,6 +34,20 @@ public class Receipt
     public DateTime? ReviewedAtUtc { get; set; }
     public string? RejectionReason { get; set; }
 
+    /// <summary>
+    /// Bu fiş, tek bir fotoğrafta birden fazla fişin tespit edildiği bir toplu yüklemeden
+    /// (bkz. <see cref="ReceiptBatch"/>) mi geldi? Tekil (normal) yüklemelerde null kalır —
+    /// mevcut tek-fiş akışı bu alandan tamamen bağımsız çalışmaya devam eder.
+    /// </summary>
+    public Guid? BatchId { get; set; }
+    public ReceiptBatch? Batch { get; set; }
+
+    /// <summary>
+    /// Bu fişin, toplu yüklemedeki orijinal fotoğraf üzerinde hangi bölgeden (4 köşe koordinatı,
+    /// JSON) kırpıldığı — yalnızca <see cref="BatchId"/> doluysa anlamlıdır, debug/referans amaçlı.
+    /// </summary>
+    public string? SourceRegionJson { get; set; }
+
     public ICollection<ReceiptField> Fields { get; set; } = new List<ReceiptField>();
     public ICollection<ReceiptVatLine> VatLines { get; set; } = new List<ReceiptVatLine>();
     public ICollection<ReceiptValidationIssue> ValidationIssues { get; set; } = new List<ReceiptValidationIssue>();

@@ -33,3 +33,6 @@ upload_response.json
 export.csv
 export.xlsx
 downloaded.png
+
+# Gerçek fiş fotoğrafları (kişisel veri) — repoya konmaz, yalnızca yerelde regresyon testi için
+tests/FisAsistan.Tests/TestData/RealReceipts/

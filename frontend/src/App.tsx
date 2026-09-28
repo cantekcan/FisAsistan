@@ -6,6 +6,7 @@ import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { UploadPage } from './pages/UploadPage';
 import { ReceiptDetailPage } from './pages/ReceiptDetailPage';
+import { BatchUploadPage } from './pages/BatchUploadPage';
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
           >
             <Route path="/" element={<DashboardPage />} />
             <Route path="/upload" element={<UploadPage />} />
+            <Route path="/batch-upload" element={<BatchUploadPage />} />
             <Route path="/receipts/:id" element={<ReceiptDetailPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />

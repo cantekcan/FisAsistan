@@ -1,3 +1,4 @@
+using FisAsistan.Application.Common;
 using FisAsistan.Application.Common.Interfaces;
 using FisAsistan.Application.Receipts.Dtos;
 using FisAsistan.Domain.Entities;
@@ -14,10 +15,6 @@ namespace FisAsistan.Api.Controllers;
 [Route("api/receipts")]
 public class ReceiptsController : ControllerBase
 {
-    private static readonly string[] AllowedExtensions = { ".jpg", ".jpeg", ".png", ".bmp" };
-    private static readonly string[] AllowedContentTypes = { "image/jpeg", "image/png", "image/bmp" };
-    private const long MaxFileSizeBytes = 10 * 1024 * 1024; // 10 MB
-
     private readonly FisAsistanDbContext _db;
     private readonly IReceiptProcessingService _processingService;
     private readonly IReceiptExportService _exportService;
@@ -42,31 +39,23 @@ public class ReceiptsController : ControllerBase
     }
 
     [HttpPost("upload")]
-    [RequestSizeLimit(MaxFileSizeBytes)]
+    [RequestSizeLimit(ReceiptFileUploadPolicy.MaxFileSizeBytes)]
     public async Task<ActionResult<ReceiptDetailDto>> Upload(IFormFile file, CancellationToken ct)
     {
-        if (file is null || file.Length == 0)
+        if (file is null)
         {
             return BadRequest(new { message = "Yüklenecek bir dosya seçmelisiniz." });
         }
 
-        if (file.Length > MaxFileSizeBytes)
+        var validationError = ReceiptFileUploadPolicy.Validate(file.FileName, file.ContentType, file.Length);
+        if (validationError is not null)
         {
-            return BadRequest(new { message = $"Dosya boyutu {MaxFileSizeBytes / 1024 / 1024} MB sınırını aşıyor." });
-        }
-
-        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
-        if (!AllowedExtensions.Contains(extension) || !AllowedContentTypes.Contains(file.ContentType.ToLowerInvariant()))
-        {
-            return BadRequest(new
-            {
-                message = "Desteklenmeyen dosya türü. Yalnızca JPG, JPEG, PNG veya BMP dosyaları kabul edilir."
-            });
+            return BadRequest(new { message = validationError });
         }
 
         await using var stream = file.OpenReadStream();
         var receiptId = await _processingService.UploadAndProcessAsync(
-            _currentUser.UserId, stream, file.FileName, file.ContentType, file.Length, ct);
+            _currentUser.UserId, stream, file.FileName, file.ContentType, file.Length, ct: ct);
 
         _db.AuditLogs.Add(new AuditLog
         {

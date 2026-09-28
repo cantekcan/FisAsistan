@@ -111,3 +111,47 @@ export interface AuthResponse {
   fullName: string;
   expiresAtUtc: string;
 }
+
+// ---- Çoklu fiş (bir fotoğrafta birden fazla fiş) ----
+
+export enum ReceiptBatchStatus {
+  Uploaded = 0,
+  RegionsProposed = 1,
+  SegmentationFailed = 2,
+  Processing = 3,
+  Completed = 4,
+  Failed = 5,
+}
+
+export const BATCH_STATUS_LABELS: Record<ReceiptBatchStatus, string> = {
+  [ReceiptBatchStatus.Uploaded]: 'Yüklendi',
+  [ReceiptBatchStatus.RegionsProposed]: 'Onay Bekliyor',
+  [ReceiptBatchStatus.SegmentationFailed]: 'Tespit Edilemedi',
+  [ReceiptBatchStatus.Processing]: 'İşleniyor',
+  [ReceiptBatchStatus.Completed]: 'Tamamlandı',
+  [ReceiptBatchStatus.Failed]: 'Hata',
+};
+
+export interface SegmentPointDto {
+  x: number;
+  y: number;
+}
+
+export interface ReceiptBatchRegionDto {
+  index: number;
+  corners: SegmentPointDto[];
+  isUserModified: boolean;
+}
+
+export interface ReceiptBatchDetailDto {
+  id: string;
+  originalFileName: string;
+  status: ReceiptBatchStatus;
+  createdAtUtc: string;
+  processedAtUtc: string | null;
+  message: string | null;
+  imageWidth: number;
+  imageHeight: number;
+  pendingRegions: ReceiptBatchRegionDto[];
+  receipts: ReceiptListItemDto[];
+}

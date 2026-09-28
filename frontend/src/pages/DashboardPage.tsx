@@ -58,6 +58,9 @@ export function DashboardPage() {
           <button className="btn btn-secondary" disabled={exporting} onClick={() => handleExport('xlsx')}>
             Excel İndir
           </button>
+          <Link className="btn btn-secondary" to="/batch-upload">
+            + Çoklu Fiş Yükle
+          </Link>
           <Link className="btn btn-primary" to="/upload">
             + Fiş Yükle
           </Link>

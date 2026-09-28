@@ -32,6 +32,8 @@ services:
       ConnectionStrings__Default: "Host=postgres;Port=5432;Database=fisasistan;Username=fisasistan;Password=fisasistan_dev_password"
       Jwt__Secret: "DEV_ONLY_CHANGE_THIS_SECRET_KEY_AT_LEAST_32_CHARS_LONG!"
       Cors__AllowedOrigins__0: "http://localhost:5173"
+      Cors__AllowedOrigins__1: "http://localhost:5175"
+      Cors__AllowedOrigins__2: "http://127.0.0.1:5175"
     ports:
       - "8080:8080"
     volumes:

@@ -23,6 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Gerçek fiş fotoğrafları (segmentasyon regresyon testleri, bkz. RealReceiptSegmentationTests). -->
+    <None Include="TestData\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\FisAsistan.Application\FisAsistan.Application.csproj" />
     <ProjectReference Include="..\..\src\FisAsistan.Domain\FisAsistan.Domain.csproj" />
     <ProjectReference Include="..\..\src\FisAsistan.Infrastructure\FisAsistan.Infrastructure.csproj" />

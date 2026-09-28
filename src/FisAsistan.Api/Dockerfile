@@ -22,13 +22,24 @@ RUN dotnet publish src/FisAsistan.Api/FisAsistan.Api.csproj -c Release -o /app/p
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 
-# Tesseract OCR'ı (yerel, ücretsiz, açık kaynak) ve Türkçe/İngilizce dil paketlerini kur.
+# Tesseract OCR'ı (yerel, ücretsiz, açık kaynak), Türkçe/İngilizce dil paketlerini ve
+# OpenCvSharp4'ün (çoklu-fiş segmentasyonu) native kütüphanesinin ihtiyaç duyduğu paylaşımlı
+# kütüphaneleri kur. OpenCV'nin "official" derlemesi GUI (GTK) ve video (FFmpeg) desteğiyle
+# derlenmiş — biz bu özellikleri hiç kullanmasak da dinamik link çözümü için bu kütüphanelerin
+# sistemde bulunması gerekiyor (gerçek konteynerde test edilerek `ldd` ile tespit edildi).
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         tesseract-ocr \
         tesseract-ocr-eng \
         tesseract-ocr-tur \
         libleptonica-dev \
+        libgtk-3-0 \
+        libgdk-pixbuf-2.0-0 \
+        libavcodec60 \
+        libavformat60 \
+        libavutil58 \
+        libswscale7 \
+        libwebpdemux2 \
     && rm -rf /var/lib/apt/lists/* \
     && TESSDATA_SRC=$(find / -type d -name "tessdata" 2>/dev/null | head -n1) \
     && mkdir -p /app/tessdata \
@@ -64,6 +75,19 @@ RUN LEPT_LIB=$(cat /tmp/lept_lib_path) \
     && rm -f /tmp/lept_lib_path /tmp/tess_lib_path
 
 RUN mkdir -p /app/storage/receipts
+
+# OpenCvSharp4'ün native kütüphanesi (DllImport("OpenCvSharpExtern")), NuGet'in RID-özel
+# "runtimes/ubuntu.24.04-x64/native/" klasörüne kopyalanmış olsa da, framework-dependent
+# (RID belirtilmeden publish edilen) bir deploy'da .NET'in varsayılan native kütüphane
+# çözümleyicisi bu RID-özel klasörü otomatik taramıyor (bkz. NETSDK1206 uyarısı) ve yalnızca
+# paylaşılan çalışma zamanı dizinini deniyor — gerçek bir konteynerde test edilerek bulundu.
+# Kütüphaneyi doğrudan /app köküne de kopyalayarak (Tesseract'ta olduğu gibi) çözüyoruz.
+RUN OPENCV_NATIVE=$(find /app/runtimes -iname "libOpenCvSharpExtern.so" 2>/dev/null | head -n1) \
+    && if [ -n "$OPENCV_NATIVE" ]; then \
+        cp "$OPENCV_NATIVE" /app/libOpenCvSharpExtern.so; \
+    else \
+        echo "UYARI: libOpenCvSharpExtern.so bulunamadı, çoklu-fiş segmentasyonu çalışmayabilir." >&2; \
+    fi
 
 # dlopen() Linux'ta çalışma dizinini otomatik aramaz (Windows'un aksine); native
 # kütüphaneleri hem /usr/lib/x86_64-linux-gnu'ya sembolik link hem de /app'e kopyaladık,

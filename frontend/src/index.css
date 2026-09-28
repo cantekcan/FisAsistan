@@ -523,3 +523,85 @@ h1 {
 .issues-panel {
   margin-bottom: 12px;
 }
+
+/* ---- Çoklu fiş yükleme ---- */
+.tips-box {
+  background: #f5f8ff;
+  border: 1px solid #dbe4ff;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.tips-box ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.tips-box li {
+  margin-bottom: 4px;
+}
+
+.batch-editor {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.batch-editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.batch-editor-canvas {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  user-select: none;
+}
+
+.batch-editor-canvas img {
+  max-width: 100%;
+  display: block;
+  border-radius: var(--radius);
+}
+
+.batch-region-box {
+  position: absolute;
+  border: 2px solid var(--color-primary);
+  background: rgba(37, 99, 235, 0.12);
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.batch-region-box.selected {
+  border-color: var(--color-danger);
+  background: rgba(220, 38, 38, 0.15);
+}
+
+.batch-region-box.drawing {
+  border-style: dashed;
+  border-color: var(--color-success);
+  background: rgba(22, 163, 74, 0.1);
+  pointer-events: none;
+}
+
+.batch-region-label {
+  position: absolute;
+  top: -22px;
+  left: 0;
+  background: var(--color-primary);
+  color: white;
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.batch-region-box.selected .batch-region-label {
+  background: var(--color-danger);
+}

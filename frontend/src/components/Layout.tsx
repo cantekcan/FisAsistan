@@ -20,6 +20,7 @@ export function Layout() {
               Panel
             </NavLink>
             <NavLink to="/upload">Fiş Yükle</NavLink>
+            <NavLink to="/batch-upload">Çoklu Fiş Yükle</NavLink>
           </nav>
         </div>
         <div className="app-header-right">

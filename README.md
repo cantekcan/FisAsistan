@@ -47,8 +47,12 @@ uyarılar üretir — "güven skoru" yerine her zaman *hangi kural, hangi metind
 docker compose up --build
 ```
 
-Bu komut PostgreSQL'i ve (Tesseract dahil) API'yi ayağa kaldırır. API `http://localhost:8080` üzerinde,
-Swagger `http://localhost:8080/swagger` adresinde çalışır. Frontend'i ayrıca çalıştırın (bkz. aşağı).
+Bu komut PostgreSQL'i, (Tesseract dahil) API'yi ve arayüzü (nginx) ayağa kaldırır:
+
+- Arayüz: `http://127.0.0.1:5175`
+- API: `http://localhost:8080`, Swagger: `http://localhost:8080/swagger`
+
+Tüm servisler `restart: unless-stopped` ile tanımlıdır; Docker Desktop açıldığında kendiliğinden başlar.
 
 ## Yerel Geliştirme (Docker'sız backend)
 
